@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Turist Destination Dashboard</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="TouristDD.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    />
+    <script src="TouristDD.js" defer></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/ol@v7.2.2/ol.css"
+      type="text/css"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/ol@v7.2.2/dist/ol.js"
+      defer
+    ></script>
+    <script>
+      const URL =
+        "https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}";
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+      crossorigin="anonymous"
+      defer
+    ></script>
+    <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
+    
+
+  </head>
+  <body>    
+    <h1>Tourist Destination Dashboard</h1>
+    <form novalidate id="mainForm">
+      <div class="container" id="box">
+        <div class="row pb-3 pb-md-0" id="firstR">
+          <div class="col-12 col-md-3" id="a">
+            <label for="youraddress"
+              >Address<span class="red-star">*</span><br
+            /></label>
+            <input
+              type="text"
+              class="form-control"
+              id="Address"
+              name="Address"
+              placeholder="Enter Address"
+              required
+            />
+            <p id="errorMessageA" hidden></p>
+          </div>
+          <div class="col-12 col-md-2" id="r">
+            <label for="yourregion"
+              >Region<span class="red-star">*</span><br
+            /></label>
+            <input
+              type="text"
+              class="form-control"
+              id="Region"
+              name="Region"
+              placeholder="Enter Region"
+              required
+            />
+            <p id="errorMessageR" hidden></p>
+          </div>
+          <div class="col-12 col-md-2" id="c">
+            <label for="yourcity"
+              >City<span class="red-star">*</span><br
+            /></label>
+            <select id="city" name="cities" class="form-select" required>
+              <option disabled selected value="">Select City</option>
+              <option value="Nicosia">Nicosia</option>
+              <option value="Paphos">Paphos</option>
+              <option value="Larnaca">Larnaca</option>
+              <option value="Ammoxostos">Ammoxostos</option>
+              <option value="Lemesos">Lemesos</option>
+              <option value="Kerinia">Kerynia</option>
+            </select>
+            <p id="errorMessageC" hidden></p>
+          </div>
+          <div class="col-12 col-md-1" id="d">
+            <div class="form-group">
+              <label class="form-label"
+                >Degree<span class="red-star">*</span></label
+              ><br />
+              <input
+                type="radio"
+                value="metric"
+                checked
+                name="temporary"
+                class="CityRadio"
+                id="Celcius"
+              />°C &ensp;
+              <input
+                type="radio"
+                value="imperial"
+                name="temporary"
+                class="CityRadio"
+                id="Farheneit"
+              />°F
+            </div>
+          </div>
+          <div class="col-12 col-md-4">
+            <div class="form-group" id="Buttons">
+              <button type="submit" class="btn btn-primary" id="Search">
+                <i class="fas fa-search"></i> Search
+              </button>
+              <button type="button" class="btn btn-danger" id="Clear">
+                <i class="fas fa-ban"></i>
+              </button>
+              <button type="button" class="btn btn-warning" data-bs-toggle="modal" id="Server" data-bs-target="#ServerModal">
+                <i class="fas fa-server"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="modal fade" id="ServerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Last 5 requests
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <table class="table table-striped" id="LogTable">
+              <tbody id="LogBody">
+                <tr>
+                  <th scope="col">Time</th>
+                  <th scope="col">Address</th>
+                  <th scope="col">Region</th>
+                  <th scope="col">City</th>
+                </tr>
+              </tbody>
+          </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container" id="MapResults">
+      <ul class="nav nav-pills mb-0" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Right Now</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Next 24 hours</button>
+        </li>
+      </ul>
+      <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+            <div class="row" id="secondC">
+                <div class="col-12 col-md-6">
+                    <table class="table table-striped" id="rnTable">
+                        <tbody id="rnBody">
+                            <tr class="first-row" id="table">
+                                <td><img src="" id="icon">
+                                <td><span id="wRegion"></span>
+                                <span id="thermokrasia"></span>
+                                <span id="LowHigh"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Pressure</td>
+                                <td><span id="Pres"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Huminity</td>
+                                <td><span id="Hum"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Wind Speed</td>
+                                <td><span id="WindSpeed"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Cloud Cover</td>
+                                <td><span id="CloudsC"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Sunrise</td>
+                                <td><span id="Sunr"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Sunset</td>
+                                <td><span id="Suns"></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12 col-md-6" id="map">
+                    <div id="map" class="map"></div>
+                </div>
+            </div>
+        </div>
+    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+      <table class="table table-striped" id="table">
+        <thead>
+          <tr>
+            <th scope="col">Time</th>
+            <th scope="col">Summary</th>
+            <th scope="col">Temp</th>
+            <th scope="col">Cloud Cover</th>
+            <th scope="col">Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td scope="row"><span id="Time1"></span></td>
+            <td><img src="" id="Summ1">
+            <td><span id="Temp1"></span></td>
+            <td><span id="Cc1"></span></td>
+            <td>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewModal">
+                View
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td scope="row"><span id="Time2"></span></td>
+            <td><img src="" id="Summ2">
+            <td><span id="Temp2"></span></td>
+            <td><span id="Cc2"></span></td>
+            <td>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewModal">
+                View
+              </button>
+          </tr>
+          <tr>
+            <td scope="row"><span id="Time3"></span></td>
+            <td><img src="" id="Summ3">
+            <td><span id="Temp3"></span></td>
+            <td><span id="Cc3"></span></td>
+            <td>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewModal">
+                View
+              </button>
+          </tr>
+
+          <tr>
+            <td scope="row"><span id="Time4"></span></td>
+            <td><img src="" id="Summ4">
+            <td><span id="Temp4"></span></td>
+            <td><span id="Cc4"></span></td>
+            <td>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewModal">
+                View
+              </button>
+          </tr>
+
+          <tr>
+            <td scope="row"><span id="Time5"></span></td>
+            <td><img src="" id="Summ5">
+            <td><span id="Temp5"></span></td>
+            <td><span id="Cc5"></span></td>
+            <td>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewModal">
+                View
+              </button>
+          </tr>
+
+          <tr>
+            <td scope="row"><span id="Time6"></span></td>
+            <td><img src="" id="Summ6">
+            <td><span id="Temp6"></span></td>
+            <td><span id="Cc6"></span></td>
+            <td>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewModal">
+                View
+              </button>
+          </tr>
+
+          <tr>
+            <td scope="row"><span id="Time7"></span></td>
+            <td><img src="" id="Summ7">
+            <td><span id="Temp7"></span></td>
+            <td><span id="Cc7"></span></td>
+            <td>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewModal">
+                View
+              </button>
+          </tr>
+
+          <tr>
+            <td scope="row"><span id="Time8"></span></td>
+            <td><img src="" id="Summ8">
+            <td><span id="Temp8"></span></td>
+            <td><span id="Cc8"></span></td>
+            <td>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewModal">
+                View
+              </button>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewModalTitle"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+    
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+    </div>
+    </div>
+    </div>
+    </div>   
+
+    <div class="container" id="cards">
+    <div class="card">
+      <div class="card-header" id="cardHeader">
+        Top 3 Tourist Attractions
+      </div>
+      <div class="attractions">
+        <span id="attraction-1"></span>
+        <span id="attraction-2"></span>
+        <span id="attraction-3"></span>
+      </div>
+      <div class="d-flex justify-content-center">
+        <div class="spinner-border spinner-border-sm" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </div>
+    </div>
+    
+  </body>
+</html>

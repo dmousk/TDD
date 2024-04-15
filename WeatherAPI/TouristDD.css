@@ -1,0 +1,180 @@
+html{
+  font-family: 'Roboto', sans-serif;
+}
+h1{
+    text-align: center;
+    color: white;
+}
+  
+body {
+    background: url('sunset.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+  
+#box {
+    height: 150px;
+    background-color: rgb(255, 255, 255, 0.3);
+    text-align: center;
+  }
+
+.red-star {
+  color: red;
+}
+
+p{
+  color: red;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+#Buttons{
+  margin: 40px;
+}
+
+#Reset, #Server{
+  margin-left: 20px;
+}
+
+#firstR {
+  margin: 40px;
+}
+
+@media only screen and (max-width: 767px) {
+  #box {
+    height: auto;
+    max-width: 90%; 
+    margin: 0 auto; 
+  }
+  
+  #firstR {
+    margin: 20px;
+  }
+  
+  #Buttons{
+    margin: 20px;
+  }
+  
+  label {
+    width: 100%;
+    display: inline-block;
+    margin-bottom: 5px;
+    text-align: left;
+  }
+  
+  input, select {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .form-label {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  
+  .form-check-label {
+    display: inline-block;
+    margin-right: 10px;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  #firstR {
+    margin: 30px;
+  }
+  
+  label {
+    width: 100%;
+    display: inline-block;
+    margin-bottom: 5px;
+    text-align: left;
+  }
+
+  input, select {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .form-label {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  
+  .form-check-label {
+    display: inline-block;
+    margin-right: 10px;
+  }
+}
+
+.form-check-inline {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 10px;
+  flex-wrap: nowrap;
+}
+
+
+#MapResults{
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+#thermokrasia {
+  font-size: 35px;
+  font-weight: bold;
+}
+
+#wRegion, #LowHigh{
+  font-size: 15px;
+}
+
+#pills-home{
+  background-color: white;
+}
+
+#pills-profile{
+  background-color:white;
+}
+
+.nav-pills .nav-link.active {
+  background-color: white;
+  color: blue;
+}
+
+.nav-pills .nav-link {
+  background-color: blue;
+  color: white;
+}
+
+.attractions {
+  list-style-type: disc;
+}
+
+.attractions span {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.nav-link {
+  border-radius: 0 !important;
+}
+
+#cards{
+  margin-top: 50px;
+  margin-bottom: 100px;
+}
+
+.table-striped>tbody>tr:nth-child(odd)>td, 
+.table-striped>tbody>tr:nth-child(odd)>th {
+   background-color:whitesmoke;
+ }
+
+ .table-striped>tbody>tr:nth-child(even)>td, 
+.table-striped>tbody>tr:nth-child(even)>th {
+   background-color:rgb(175, 174, 174);
+ }
