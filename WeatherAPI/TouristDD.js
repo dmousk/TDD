@@ -1,6 +1,6 @@
 const WeatherApiKey = '1e135ac10813133aa82195bd3629907f';
 let isEmpty = false;
-const OpenAIKey = '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';
+/*const OpenAIKey = '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';*/
 let weather = "";
 let weatherIcon = "";
 let iconUrl = "";
